@@ -1,0 +1,26 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VSCode
+.vscode/
+
+# Maven
+target/
+
+# Gradle
+build/
+
+# Compiled class files
+*.class
+
+# Logs and local files
+*.log
+
+# Secret config
+config.yml
