@@ -1,0 +1,9 @@
+name: SpyCord
+version: "1.0"
+main: spycord.SpyCord
+api-version: "1.20"
+
+commands:
+  spycord:
+    description: "Shows the SpyCord plugin version"
+    usage: "/<command> <version|v|ver>" 
