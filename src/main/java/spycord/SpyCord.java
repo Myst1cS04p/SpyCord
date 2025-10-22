@@ -43,7 +43,6 @@ public class SpyCord extends JavaPlugin {
                 }
             }
         }.runTaskTimer(this, 0, 12 * 60 * 60 * 20); // Check every 12 hours
-        
 
         discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
 
