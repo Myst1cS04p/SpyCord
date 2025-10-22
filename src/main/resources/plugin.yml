@@ -1,5 +1,5 @@
 name: SpyCord
-version: "1.0"
+version: "1.1.0"
 main: spycord.SpyCord
 api-version: "1.20"
 
