@@ -20,12 +20,12 @@ public class ToggleCommand implements CommandExecutor {
             String[] args) {
         if (sender.hasPermission("spycord.toggle")) {
             plugin.isEnabled = !plugin.isEnabled;
-            
+
             SpyCord.getDiscord()
                     .sendToDiscord((plugin.isEnabled ? "✅✅✅" : "🛑🛑🛑") + 
-                    "@everyone The plugin has been toggled " + 
+                    "@everyone The plugin has been toggled **" + 
                     (plugin.isEnabled ? "on" : "off") + 
-                    " by " + sender.getName() + 
+                    "** by **" + sender.getName() + "**" + 
                     (plugin.isEnabled ? "✅✅✅" : "🛑🛑🛑"));
 
             plugin.Log(Component.text("Toggling plugin ", NamedTextColor.WHITE)

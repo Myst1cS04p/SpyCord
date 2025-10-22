@@ -25,8 +25,8 @@ public class SpyCord extends JavaPlugin {
         getServer().getPluginManager().registerEvents(commandListener, this);
         registerCommands();
 
-        discordManager.sendToDiscord("@everyone ✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅");
-        discordManager.sendToDiscord("Command being logged: \n" + commandListener.GetSensitiveCommands().toString());
+        discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
+        discordManager.sendToDiscord("Command being logged: \n" + commandListener.GetSensitiveCommands().toString().replaceAll("[", "").replaceAll("]", "").replaceAll(",", "\n"));
 
         splash();
     }
@@ -54,13 +54,13 @@ public class SpyCord extends JavaPlugin {
     public void ReloadPlugin(){
         reloadConfig();
         isEnabled = getConfig().getBoolean("enabled", true);
-        discordManager.sendToDiscord("@everyone 🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMAMNDS🛑🛑");
+        discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMAMNDS🛑🛑**");
         discordManager.SetWebhookUrl(getConfig().getString("webhook-url"));
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("SpyCord Is Inactive");
+        discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS🛑🛑**\n -# This could be due to the server closing.");
     }
     
     public static SpyCord getInstance() {

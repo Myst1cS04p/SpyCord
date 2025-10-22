@@ -16,7 +16,7 @@ public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         plugin.reloadConfig();
-        SpyCord.getDiscord().sendToDiscord("@everyone the configuration has been reloaded by " + sender.getName());
+        SpyCord.getDiscord().sendToDiscord("@everyone the configuration has been **reloaded** by **" + sender.getName() + "**");
         plugin.Log("Configuration reloaded.", sender);
         return true;
     }
