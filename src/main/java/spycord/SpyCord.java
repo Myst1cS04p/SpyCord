@@ -1,6 +1,9 @@
 package spycord;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,8 +30,8 @@ public class SpyCord extends JavaPlugin {
 
         discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
 
-        String commandList = commandListener.GetSensitiveCommands().toString();
-        String formattedList = commandList.replaceAll("^\\[|\\]$", "").replaceAll(",", "\n").replaceAll("(.+)", "*$1*");
+        List<String> commandList = commandListener.GetSensitiveCommands();
+        String formattedList = commandList.stream().map(cmd -> "*" + cmd.trim() + "*").collect(Collectors.joining("\n"));
 
         discordManager.sendToDiscord("## Command being logged: \n" + formattedList);
 
