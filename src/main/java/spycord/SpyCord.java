@@ -3,20 +3,20 @@ package spycord;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import org.bukkit.scheduler.BukkitRunnable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import spycord.commands.*;
+import updater.VersionChecker;
 
 public class SpyCord extends JavaPlugin {
-
     private static SpyCord instance;
     public boolean isEnabled = true;
     private static DiscordManager discordManager;
     private final CommandListener commandListener = new CommandListener(this);
+    private final VersionChecker versionChecker = new VersionChecker("Myst1cS04p", "SpyCord", this);
     
     @Override
     public void onEnable() {
@@ -27,6 +27,23 @@ public class SpyCord extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(commandListener, this);
         registerCommands();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                versionChecker.checkLatestVersion();
+                if(versionChecker.latestVersion != null && 
+                   versionChecker.isNewerVersion(versionChecker.latestVersion, getPluginMeta().getVersion())) {
+                    discordManager.sendToDiscord("# Version " + versionChecker.latestVersion + " is availible for SpyCord\n"+
+                    "## You can get it from: " +
+                    "- **Modrinth**: https://modrinth.com/plugin/spycord" + 
+                    "- **Github**: https://github.com/Myst1cS04p/SpyCord/releases" +
+                    "- **SpigotMC**: https://www.spigotmc.org/resources/spycord.129615/"+
+                    "- **PaperMC Hangar**: https://hangar.papermc.io/Myst1cS04p/Spycord");
+                }
+            }
+        }.runTaskTimer(this, 0, 12 * 60 * 60 * 20); // Check every 12 hours
+        
 
         discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
 
@@ -67,7 +84,7 @@ public class SpyCord extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS🛑🛑**\n -# This could be due to the server closing.");
+        discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS🛑🛑**\n-# This could be due to the server closing.");
     }
     
     public static SpyCord getInstance() {
