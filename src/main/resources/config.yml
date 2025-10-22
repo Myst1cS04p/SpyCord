@@ -1,3 +1,5 @@
+enabled: true
+
 webhook-url: ""
 sensitive-commands:
   - "op"

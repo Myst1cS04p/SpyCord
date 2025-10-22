@@ -8,22 +8,36 @@ import java.net.URL;
 public class DiscordManager {
 
     private final SpyCord plugin;
+    private URL webhookUrl;
 
-    public DiscordManager(SpyCord plugin) {
+
+    public void SetWebhookUrl(String webhookUrl) {
+        try {
+            this.webhookUrl = URI.create(webhookUrl).toURL();
+        } catch (Exception e) {
+            plugin.Log("Invalid webhook URL: " + webhookUrl);
+            plugin.getLogger().severe(e.toString());
+        }
+    }
+
+    public DiscordManager(SpyCord plugin, String webhookUrl) {
         this.plugin = plugin;
+        try {
+            this.webhookUrl = URI.create(webhookUrl).toURL();
+        } catch (Exception e) {
+            plugin.Log("Invalid webhook URL: " + webhookUrl);
+            plugin.getLogger().severe(e.toString());
+        }
     }
 
     public void sendToDiscord(String message) {
-        String webhookUrl = plugin.getConfig().getString("webhook-url");
-        if (webhookUrl == null || webhookUrl.isEmpty()) {
-            plugin.getLogger().warning("Webhook URL is not set in config.yml!");
+        if(webhookUrl == null) {
+            plugin.Log("Webhook URL is not set.");
             return;
         }
 
-        try {
-            URL url = URI.create(webhookUrl).toURL();
-            
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        try {            
+            HttpURLConnection connection = (HttpURLConnection) webhookUrl.openConnection();
 
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);

@@ -1,0 +1,23 @@
+package spycord.commands;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import spycord.SpyCord;
+
+public class ReloadCommand implements CommandExecutor {
+
+    private final SpyCord plugin;
+
+    public ReloadCommand(SpyCord plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        plugin.reloadConfig();
+        plugin.Log("Configuration reloaded.", sender);
+        return true;
+    }
+    
+}
