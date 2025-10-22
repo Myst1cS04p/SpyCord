@@ -1,9 +1,7 @@
 package spycord.commands;
-
 import org.bukkit.command.CommandExecutor;
-
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import spycord.SpyCord;
 
 public class StatusCommand implements CommandExecutor {
@@ -17,9 +15,9 @@ public class StatusCommand implements CommandExecutor {
     @Override
     public boolean onCommand(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         plugin.Log(
-            Component.text("Spycord is ", TextColor.fromHexString("#fff"))
-                .append(Component.text(plugin.isEnabled ? "actively logging " : "not actively logging ", TextColor.fromHexString(plugin.isEnabled ? "#0f0" : "#f00")))
-                .append(Component.text("commands.", TextColor.fromHexString("#fff"))),
+            Component.text("Spycord is ", NamedTextColor.WHITE)
+                .append(Component.text(plugin.isEnabled ? "actively logging " : "not actively logging ", plugin.isEnabled ? NamedTextColor.GREEN : NamedTextColor.RED))
+                .append(Component.text("commands.", NamedTextColor.WHITE)),
                 sender);
         return true;
     }

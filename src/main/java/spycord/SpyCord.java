@@ -1,10 +1,11 @@
 package spycord;
 
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import spycord.commands.*;
 
 public class SpyCord extends JavaPlugin {
@@ -33,7 +34,7 @@ public class SpyCord extends JavaPlugin {
     private void registerCommands(){
         getCommand("version").setExecutor(new VersionCommand(this));
         getCommand("reload").setExecutor(new ReloadCommand(this));
-        getCommand("report").setExecutor(new ReportCommand());
+        getCommand("report").setExecutor(new ReportCommand(this));
         getCommand("status").setExecutor(new StatusCommand(this));
         getCommand("toggle").setExecutor(new ToggleCommand(this));
     }
@@ -42,11 +43,11 @@ public class SpyCord extends JavaPlugin {
         getLogger().info("\u001B[35m\u001B[1m[SPYCORD] \u001B[0m" + message);
     }
     public void Log(String message, CommandSender sender){
-        sender.sendMessage(Component.text("[SPYCORD] ", TextColor.fromHexString("#ff00c3ff"))
-            .append(Component.text(message, TextColor.fromHexString("#ffffff"))));
+        sender.sendMessage(Component.text("[SPYCORD] ", NamedTextColor.LIGHT_PURPLE)
+            .append(Component.text(message, NamedTextColor.WHITE)));
     }
     public void Log(Component message, CommandSender sender){
-        sender.sendMessage(Component.text("[SPYCORD] ", TextColor.fromHexString("#ff00c3ff"))
+        sender.sendMessage(Component.text("[SPYCORD] ", NamedTextColor.LIGHT_PURPLE)
             .append(message));
     }
 
@@ -71,12 +72,12 @@ public class SpyCord extends JavaPlugin {
     }
 
     private void splash(){
-        getLogger().info("\n\u001B[31m" + 
+        getLogger().info("\n\u001B[34m" + 
                         "┏━┓┏━┓╻ ╻┏━╸┏━┓┏━┓╺┳┓\n"+
                         "┗━┓┣━┛┗┳┛┃  ┃ ┃┣┳┛ ┃┃\n"+
                         "┗━┛╹   ╹ ┗━╸┗━┛╹┗╸╺┻┛\n\u001B[0m");
         getLogger().info("Running Version " + getPluginMeta().getVersion() + "\n");
-        getLogger().info("\n\u001B[36m"+
+        getLogger().info("\n\u001B[35m"+
                         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"+
                         "@@@@@    @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"+
                         "@@@@@    @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"+    

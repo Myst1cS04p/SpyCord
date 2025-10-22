@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import spycord.SpyCord;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class VersionCommand implements CommandExecutor {
 
@@ -21,7 +21,7 @@ public class VersionCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
         if(sender.hasPermission("spycord.version")) {
-            plugin.Log(Component.text("Running SpyCord Version: ", TextColor.fromHexString("#fff")).append(Component.text(plugin.getPluginMeta().getVersion(), TextColor.fromHexString("#e6ea1aff"))), sender);
+            plugin.Log(Component.text("Running SpyCord Version: ", NamedTextColor.WHITE).append(Component.text(plugin.getPluginMeta().getVersion(), NamedTextColor.GOLD)), sender);
             return true;
         }
         return false;
