@@ -92,6 +92,7 @@ public class VersionChecker implements Listener {
 
             // Parse the JSON response
             JSONObject releaseData = new JSONObject(convertStringToMap(response.toString()));
+            plugin.getLogger().info("Latest version fetched: " + releaseData.get("tag_name") + "\n\n\n"+ releaseData);
             this.latestVersion = (String) releaseData.get("tag_name"); // Extract version number from the tag
             return this.latestVersion;
 

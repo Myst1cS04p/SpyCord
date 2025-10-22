@@ -3,6 +3,8 @@ package spycord;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,6 +47,8 @@ public class SpyCord extends JavaPlugin {
         }.runTaskTimer(this, 0, 12 * 60 * 60 * 20); // Check every 12 hours
 
         discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
+
+        Metrics metrics = new Metrics(this, 27671);
 
         List<String> commandList = commandListener.GetSensitiveCommands();
         String formattedList = commandList.stream().map(cmd -> "*" + cmd.trim() + "*").collect(Collectors.joining("\n"));
