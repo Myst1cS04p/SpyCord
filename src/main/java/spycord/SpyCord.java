@@ -26,7 +26,11 @@ public class SpyCord extends JavaPlugin {
         registerCommands();
 
         discordManager.sendToDiscord("@everyone **✅THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS✅**");
-        discordManager.sendToDiscord("Command being logged: \n" + commandListener.GetSensitiveCommands().toString().replaceAll("[", "").replaceAll("]", "").replaceAll(",", "\n"));
+
+        String commandList = commandListener.GetSensitiveCommands().toString();
+        String formattedList = commandList.replaceAll("^\\[|\\]$", "").replaceAll(",", "\n").replaceAll("(.+)", "*$1*");
+
+        discordManager.sendToDiscord("## Command being logged: \n" + formattedList);
 
         splash();
     }
