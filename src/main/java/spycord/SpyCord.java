@@ -77,7 +77,9 @@ public class SpyCord extends JavaPlugin {
     public void ReloadPlugin(){
         reloadConfig();
         isEnabled = getConfig().getBoolean("enabled", true);
-        discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMAMNDS🛑🛑**");
+        if(!isEnabled){
+            discordManager.sendToDiscord("@everyone **🛑🛑THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS🛑🛑**");
+        }
         discordManager.SetWebhookUrl(getConfig().getString("webhook-url"));
     }
 
