@@ -40,14 +40,21 @@ public class VersionChecker implements Listener {
         this.owner = owner;
         this.repo = repo;
         this.plugin = plugin;
-        updateMessage = Component.text("A new version of the plugin is available: ", NamedTextColor.WHITE).append(Component.text(this.latestVersion, NamedTextColor.GOLD));
+        this.updateMessage = Component.text("A new version of the plugin is available: ", NamedTextColor.WHITE);
+        this.latestVersion = getLatestVersion();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+
+        if(this.latestVersion == null) {
+            plugin.getLogger().warning("Could not fetch the latest version information.");
+            return;
+        }
+
         Player player = event.getPlayer();
         if(isNewerVersion(this.latestVersion, plugin.getPluginMeta().getVersion())){
-            player.sendMessage(updateMessage);
+            player.sendMessage(this.updateMessage.append(Component.text(this.latestVersion, NamedTextColor.GOLD)));
         }
     }
 
