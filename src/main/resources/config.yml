@@ -11,5 +11,11 @@ sensitive-commands:
   - "whitelist add"
   - "whitelist remove"
   - "whitelist reload"
+  - "give"
+  - "stop"
+  - "restart"
+  - "teleport"
+  - "gamemode"
+  - "data"
 blacklist:
   - "login"
