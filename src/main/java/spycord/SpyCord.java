@@ -1,6 +1,5 @@
 package spycord;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpyCord extends JavaPlugin {

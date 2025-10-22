@@ -2,6 +2,7 @@ package spycord;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class DiscordManager {
@@ -20,7 +21,8 @@ public class DiscordManager {
         }
 
         try {
-            URL url = new URL(webhookUrl);
+            URL url = URI.create(webhookUrl).toURL();
+            
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");

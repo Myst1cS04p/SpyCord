@@ -24,3 +24,5 @@ build/
 
 # Secret config
 config.yml
+
+.gradle/

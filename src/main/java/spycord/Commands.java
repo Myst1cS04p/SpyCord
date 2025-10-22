@@ -30,7 +30,7 @@ public class Commands implements TabExecutor {
 
         String subcommand = args[0].toLowerCase();
         if (subcommand.equals("version") || subcommand.equals("v") || subcommand.equals("ver")) {
-            String version = plugin.getDescription().getVersion();
+            String version = plugin.getPluginMeta().getVersion();
             sender.sendMessage("Spycord plugin version: " + version);
             return true;
         }

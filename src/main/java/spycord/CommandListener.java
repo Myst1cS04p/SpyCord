@@ -1,7 +1,5 @@
 package spycord;
 
-import spycord.SpyCord;
-
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -108,5 +106,10 @@ public class CommandListener implements Listener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @EventHandler
+    public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        // This method is intentionally left empty to avoid duplicate logging
     }
 }

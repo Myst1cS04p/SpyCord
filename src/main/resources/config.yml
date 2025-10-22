@@ -1,1 +1,15 @@
 webhook-url: ""
+sensitive-commands:
+  - "op"
+  - "deop"
+  - "ban"
+  - "ban-ip"
+  - "pardon"
+  - "pardon-ip"
+  - "kick"
+  - "stop"
+  - "whitelist add"
+  - "whitelist remove"
+  - "whitelist reload"
+blacklist:
+  - "login"
