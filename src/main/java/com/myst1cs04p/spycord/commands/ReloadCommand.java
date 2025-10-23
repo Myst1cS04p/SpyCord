@@ -1,9 +1,10 @@
-package spycord.commands;
+package com.myst1cs04p.spycord.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import spycord.SpyCord;
+
+import com.myst1cs04p.spycord.SpyCord;
 
 public class ReloadCommand implements CommandExecutor {
 
@@ -15,9 +16,9 @@ public class ReloadCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        plugin.ReloadPlugin();
+        plugin.reloadPlugin();
         SpyCord.getDiscord().sendToDiscord("@everyone the configuration has been **reloaded** by **" + sender.getName() + "**");
-        plugin.Log("Configuration reloaded.", sender);
+        plugin.log("Configuration reloaded.", sender);
         return true;
     }
     

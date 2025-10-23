@@ -1,8 +1,8 @@
-package spycord.commands;
+package com.myst1cs04p.spycord.commands;
 
 import org.bukkit.command.CommandExecutor;
 
-import spycord.SpyCord;
+import com.myst1cs04p.spycord.SpyCord;
 
 public class ReportCommand implements CommandExecutor {
 
@@ -13,7 +13,7 @@ public class ReportCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-        plugin.Log("This feature has not yet been implemented.", sender);
+        plugin.log("This feature has not yet been implemented.", sender);
         return false;
     }
     

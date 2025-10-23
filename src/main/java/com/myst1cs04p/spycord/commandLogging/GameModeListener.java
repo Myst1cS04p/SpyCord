@@ -1,4 +1,4 @@
-package spycord.commands;
+package com.myst1cs04p.spycord.commandLogging;
 
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -6,45 +6,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.server.ServerCommandEvent;
-
-import spycord.SpyCord;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import com.myst1cs04p.spycord.SpyCord;
 
-public class CommandListener implements Listener {
 
-    private final File logFile;
-    private final SpyCord plugin;
+public class GameModeListener implements Listener {
+    private final Spycord plugin;
 
-    public CommandListener(SpyCord plugin) {
+    public GameModeListener(Spycord plugin) {
         this.plugin = plugin;
-        File dataFolder = plugin.getDataFolder();
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs();
-        }
-
-        logFile = new File(dataFolder, "commands.log");
-        try {
-            if (!logFile.exists()) {
-                logFile.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<String> GetSensitiveCommands() {
-        return plugin.getConfig().getStringList("sensitive-commands");
     }
 
     @EventHandler
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-        if(!plugin.isEnabled) {
+        if(!plugin.getIsEnabled()) {
             return;
         }
 
@@ -75,6 +55,9 @@ public class CommandListener implements Listener {
 
     @EventHandler
     public void OnConsoleCommand(ServerCommandEvent event) {
+        if (!plugin.getIsEnabled()) {
+            return;
+        }
         String senderName = event.getSender().getName();
         String command = event.getCommand(); // No slash prefix
 
@@ -92,6 +75,9 @@ public class CommandListener implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        if (!plugin.getIsEnabled()) {
+            return;
+        }
         String playerName = event.getPlayer().getName();
         String command = event.getMessage(); // Full command with slash
         boolean isOp = event.getPlayer().isOp();
