@@ -4,19 +4,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONObject;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-
-import java.util.Map;
-import java.util.HashMap;
 
 
 public class VersionChecker implements Listener {
@@ -78,7 +74,7 @@ public class VersionChecker implements Listener {
     public String getLatestVersion() {
         try {
             // GitHub API endpoint for latest release
-            String apiUrl = "https://api.github.com/repos/" + this.owner + "/"+ this.repo + "/releases/latest";
+            String apiUrl = "https://api.github.com/repos/" + this.owner + "/" + this.repo + "/releases/latest";
             HttpURLConnection connection = (HttpURLConnection) new URI(apiUrl).toURL().openConnection();
             connection.setRequestMethod("GET");
 
@@ -90,10 +86,14 @@ public class VersionChecker implements Listener {
             }
             reader.close();
 
-            // Parse the JSON response
-            JSONObject releaseData = new JSONObject(convertStringToMap(response.toString()));
-            plugin.getLogger().info("Latest version fetched: " + releaseData.get("tag_name") + "\n\n\n"+ releaseData);
-            this.latestVersion = (String) releaseData.get("tag_name"); // Extract version number from the tag
+            // Use JSONObject's constructor that accepts a String
+            JSONParser parser = new JSONParser();
+            JSONObject releaseData = (JSONObject) parser.parse(response.toString());
+            plugin.getLogger()
+                    .info("Latest version fetched: " + releaseData.get("tag_name") + "\n\n\n" + releaseData);
+
+            // Extract version number from the tag
+            this.latestVersion = (String) releaseData.get("tag_name");
             return this.latestVersion;
 
         } catch (Exception e) {
@@ -118,27 +118,5 @@ public class VersionChecker implements Listener {
             }
         }
         return false; // Same version
-    }
-    
-
-    public static Map<String, String> convertStringToMap(String input) {
-        Map<String, String> map = new HashMap<>();
-
-        // Split the input string by the comma delimiter to get key-value pairs
-        String[] keyValuePairs = input.split(",");
-
-        // Iterate through the key-value pairs
-        for (String pair : keyValuePairs) {
-            // Split each pair by the equals sign to separate key and value
-            String[] entry = pair.split("=");
-
-            // Ensure the entry has both a key and a value
-            if (entry.length == 2) {
-                String key = entry[0].trim(); // Trim whitespace from the key
-                String value = entry[1].trim(); // Trim whitespace from the value
-                map.put(key, value);
-            }
-        }
-        return map;
     }
 }
