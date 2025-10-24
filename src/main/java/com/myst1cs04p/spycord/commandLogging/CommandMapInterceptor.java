@@ -11,16 +11,43 @@ import com.myst1cs04p.spycord.SpyCord;
 public class CommandMapInterceptor implements CommandMap {
     private final CommandMap original;
     private final SpyCord plugin;
+    private List<String> commandList;
+    private boolean isModeWhitelist;
 
-    CommandMapInterceptor(CommandMap original, SpyCord plugin) {
+    public CommandMapInterceptor(CommandMap original, SpyCord plugin, boolean mode) {
         this.original = original;
         this.plugin = plugin;
+        this.commandList = plugin.getSensitiveCommands();
+        this.isModeWhitelist = mode;
+    }
+
+    public void UpdateMode(boolean Mode){
+        this.isModeWhitelist = Mode;
+    }
+    public void UpdateCommands(List<String> commandList){
+        this.commandList = commandList;
     }
 
     @Override
     public boolean dispatch(CommandSender sender, String commandLine) {
-        plugin.getLogger().info("[Intercepted] " + sender.getName() + " ran: /" + commandLine);
-        
+        if (!plugin.isEnabled()) {
+            // If the plugin is disabled, just dispatch the command normally
+            return original.dispatch(sender, commandLine);
+        }
+
+        // Normalize commandLine for comparison
+        String lowerCommandLine = commandLine.toLowerCase();
+
+        // Check if the command matches any in the list
+        boolean matchesList = commandList.stream()
+                .anyMatch(lowerCommandLine::contains);
+
+        // Decide whether to log based on mode and match
+        if ((isModeWhitelist && matchesList) || (!isModeWhitelist && !matchesList)) {
+            plugin.getCommandLogger().log(" [" + sender + "] /" + commandLine);
+        }
+
+        // Always dispatch the command regardless
         return original.dispatch(sender, commandLine);
     }
 

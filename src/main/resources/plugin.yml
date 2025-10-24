@@ -1,6 +1,6 @@
 name: SpyCord
-version: "1.1.0"
-main: spycord.SpyCord
+version: "1.1.0 TEST3"
+main: com.myst1cs04p.spycord.SpyCord
 api-version: "1.20"
 
 commands:

@@ -1,6 +1,7 @@
 enabled: true
 
 webhook-url: ""
+whitelist: true # Whether to log these commands(whitelist mode) or log everything EXCEPT these commands(false whitelist)
 sensitive-commands:
   - "op"
   - "deop"
@@ -19,5 +20,3 @@ sensitive-commands:
   - "teleport"
   - "gamemode"
   - "data"
-blacklist:
-  - "login"
