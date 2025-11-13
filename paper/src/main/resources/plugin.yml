@@ -1,7 +1,10 @@
 name: SpyCord
 version: "1.1a-paper"
 main: com.myst1cs04p.spycord.SpyCord
-api-version: "1.20"
+api-version: '1.21.1'
+website: https://github.com/Myst1cS04p/SpyCord
+author: Myst1cS04p
+
 
 permissions:
   spycord.version:

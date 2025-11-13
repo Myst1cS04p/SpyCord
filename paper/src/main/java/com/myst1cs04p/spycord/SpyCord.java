@@ -8,12 +8,13 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.myst1cs04p.spycord.commandLogging.Logger;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -22,14 +23,13 @@ public final class SpyCord extends JavaPlugin {
     private static SpyCord instance;
     private static DiscordManager discordManager;
     private static Logger commandLogger;
-    LiteralArgumentBuilder<CommandSourceStack> rootCommand = Commands.literal("spycord");
 
     private boolean isEnabled;
 
     // -------------------- Lifecycle --------------------
 
     @Override
-    public void onEnable() {
+    public void onEnable() { 
         instance = this;
         saveDefaultConfig();
 
@@ -58,12 +58,16 @@ public final class SpyCord extends JavaPlugin {
     // -------------------- Initialization Helpers --------------------
 
     private void registerCommands() {
-        rootCommand
+        LiteralCommandNode<CommandSourceStack> command = Commands.literal("spycord")
             .then(ReloadCommand.createCommand(this))
             .then(ReportCommand.createCommand(this))
             .then(StatusCommand.createCommand(this))
             .then(ToggleCommand.createCommand(this))
-            .then(VersionCommand.createCommand(this));
+            .then(VersionCommand.createCommand(this))
+            .build();
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd ->{
+            cmd.registrar().register(command);
+        });
     }
 
     private void startVersionCheckerTask() {
