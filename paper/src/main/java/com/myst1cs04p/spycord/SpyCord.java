@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.myst1cs04p.spycord.commandLogging.Logger;
+import com.myst1cs04p.spycord.logging.Logger;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
