@@ -1,22 +1,28 @@
 package com.myst1cs04p.spycord;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.myst1cs04p.spycord.commandLogging.Logger;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
-import com.myst1cs04p.spycord.commandLogging.Logger;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class SpyCord extends JavaPlugin {
 
     private static SpyCord instance;
     private static DiscordManager discordManager;
     private static Logger commandLogger;
+    LiteralArgumentBuilder<CommandSourceStack> rootCommand = Commands.literal("spycord");
 
     private boolean isEnabled;
 
@@ -52,11 +58,12 @@ public final class SpyCord extends JavaPlugin {
     // -------------------- Initialization Helpers --------------------
 
     private void registerCommands() {
-        getCommand("version").setExecutor(new VersionCommand(this));
-        getCommand("reload").setExecutor(new ReloadCommand(this));
-        getCommand("report").setExecutor(new ReportCommand(this));
-        getCommand("status").setExecutor(new StatusCommand(this));
-        getCommand("toggle").setExecutor(new ToggleCommand(this));
+        rootCommand
+            .then(ReloadCommand.createCommand(this))
+            .then(ReportCommand.createCommand(this))
+            .then(StatusCommand.createCommand(this))
+            .then(ToggleCommand.createCommand(this))
+            .then(VersionCommand.createCommand(this));
     }
 
     private void startVersionCheckerTask() {
@@ -71,7 +78,7 @@ public final class SpyCord extends JavaPlugin {
                             - **Hangar**: https://hangar.papermc.io/Myst1cS04p/Spycord
                             """.formatted(version);
 
-                    getLogger().info("A new version of SpyCord is available: " + version);
+                    getLogger().log(Level.INFO, "A new version of SpyCord is available: {0}", version);
                     SpyCord.getDiscord().sendToDiscord(message);
                 })
                 .withInterval(12 * 60 * 60 * 20L)
@@ -130,7 +137,7 @@ public final class SpyCord extends JavaPlugin {
     }
 
     public void log(String message) {
-        getLogger().info("\u001B[35m\u001B[1m[SPYCORD]\u001B[0m " + message);
+        getLogger().log(Level.INFO, "\u001b[35m\u001b[1m[SPYCORD]\u001b[0m {0}", message);
     }
 
     public void log(String message, CommandSender sender) {
@@ -168,5 +175,9 @@ public final class SpyCord extends JavaPlugin {
 
     public boolean getIsEnabled(){
         return isEnabled;
+    }
+
+    public boolean getIsEnabled(String module){
+        return getConfig().getBoolean("modules." + module);
     }
 }

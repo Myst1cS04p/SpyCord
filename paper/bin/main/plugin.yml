@@ -1,0 +1,38 @@
+name: SpyCord
+version: "1.1 TEST4"
+main: com.myst1cs04p.spycord.SpyCord
+api-version: "1.20"
+
+commands:
+  version:
+    description: "Displays the plugin version."
+    usage: "/spycord version" 
+    aliases: ["v", "ver"]
+  reload:
+    description: "Reloads the plugin configuration."
+    usage: "/spycord reload"
+    aliases: ["spycordrl", "spycord r"]
+  report:
+    description: "Reports an issue to the developer."
+    usage: "/spycord report <issue>"
+    aliases: ["bug", "issue"]
+  toggle:
+    description: "Toggles the plugin on or off."
+    usage: "/spycord toggle"
+  status:
+    description: "Checks the current status of the plugin."
+    usage: "/spycord status"
+
+permissions:
+  spycord.version:
+    description: "Allows use of the version command."
+    default: op
+  spycord.reload:
+    description: "Allows use of the reload command."
+    default: op
+  spycord.report:
+    description: "Allows use of the report command."
+    default: op
+  spycord.toggle:
+    description: "Allows use of the toggle command."
+    default: op

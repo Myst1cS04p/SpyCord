@@ -4,8 +4,6 @@ import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import com.myst1cs04p.spycord.SpyCord;
 
 
@@ -18,7 +16,7 @@ public class GameModeListener implements Listener {
 
     @EventHandler
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-        if(!plugin.getIsEnabled()) {
+        if(!plugin.getIsEnabled() && !plugin.getIsEnabled("gamemode-logger")) {
             return;
         }
 
@@ -26,18 +24,11 @@ public class GameModeListener implements Listener {
         GameMode newMode = event.getNewGameMode();
         GameMode oldMode = event.getPlayer().getGameMode();
 
-        boolean isOp = event.getPlayer().isOp();
-        if (!isOp) {
-            return; // Skip non-OPs
-        }
-
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String logEntry = String.format("[%s] [OP] %s: switched gamemode from %s to %s\n",
-                time,
                 playerName,
                 oldMode.name(),
                 newMode.name());
 
-        SpyCord.getDiscord().sendToDiscord(logEntry);
+        this.plugin.getCommandLogger().log(logEntry);;
     }
 }
