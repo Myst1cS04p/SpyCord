@@ -29,6 +29,6 @@ public class GameModeListener implements Listener {
                 oldMode.name(),
                 newMode.name());
 
-        this.plugin.getCommandLogger().log(logEntry);;
+        SpyCord.getCommandLogger().log(logEntry);;
     }
 }

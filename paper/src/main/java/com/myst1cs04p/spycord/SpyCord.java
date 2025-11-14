@@ -9,9 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.myst1cs04p.spycord.logging.Logger;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
+import com.myst1cs04p.spycord.logging.Logger;
+
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -162,12 +163,13 @@ public final class SpyCord extends JavaPlugin {
         List<String> sensitiveCommands = getConfig().getStringList("sensitive-commands");
         return sensitiveCommands.stream().map(String::toLowerCase).toList();
     }
-
-    public Logger getCommandLogger(){
+    
+    
+    // -------------------- Getters --------------------
+    
+    public static Logger getCommandLogger(){
         return commandLogger;
     }
-
-    // -------------------- Getters --------------------
 
     public static SpyCord getInstance() {
         return instance;

@@ -24,7 +24,7 @@ public class OPJoinListener implements Listener {
         
         if(event.getPlayer().isOp()){
             String logEntry = String.format("[OP] %s joined the game.", event.getPlayer().getName());
-            this.plugin.getCommandLogger().log(logEntry);
+            SpyCord.getCommandLogger().log(logEntry);
         }
     }
 
@@ -37,7 +37,7 @@ public class OPJoinListener implements Listener {
         
         if(event.getPlayer().isOp()){
             String logEntry = String.format("[OP] %s left the game.", event.getPlayer().getName());
-            this.plugin.getCommandLogger().log(logEntry);
+            SpyCord.getCommandLogger().log(logEntry);
         }
 
     }
