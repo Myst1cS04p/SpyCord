@@ -1,4 +1,4 @@
-package com.myst1cs04p.spycord.commandLogging;
+package com.myst1cs04p.spycord.listeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -16,7 +16,7 @@ public class GameModeListener implements Listener {
 
     @EventHandler
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-        if(!plugin.getIsEnabled() && !plugin.getIsEnabled("gamemode-logger")) {
+        if(!plugin.getIsEnabled() || !plugin.getIsEnabled("gamemode-logger")) {
             return;
         }
 
@@ -24,7 +24,7 @@ public class GameModeListener implements Listener {
         GameMode newMode = event.getNewGameMode();
         GameMode oldMode = event.getPlayer().getGameMode();
 
-        String logEntry = String.format("[%s] [OP] %s: switched gamemode from %s to %s\n",
+        String logEntry = String.format("[%s] [OP]: switched gamemode from %s to %s\n",
                 playerName,
                 oldMode.name(),
                 newMode.name());

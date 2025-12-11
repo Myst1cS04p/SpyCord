@@ -17,7 +17,7 @@ public class ReloadCommand{
 
                     plugin.reloadPlugin();
                     SpyCord.getDiscord().sendToDiscord(
-                            "@everyone the configuration has been **reloaded** by **" + sender.getName() + "**");
+                            "The configuration has been **reloaded** by **" + sender.getName() + "**");
                     plugin.log("Configuration reloaded.", sender);
                     return 1;
             });

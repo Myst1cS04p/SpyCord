@@ -1,4 +1,4 @@
-package com.myst1cs04p.spycord.commandLogging;
+package com.myst1cs04p.spycord.listeners;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,9 +16,7 @@ public class Logger {
     }
 
 
-    public void log(String message){
-        SpyCord.getDiscord().sendToDiscord(message);
-        
+    public void log(String message){        
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         try (FileWriter writer = new FileWriter("command.log", true)) { // true = append mode
             writer.write("[" + time + "] " + message.toString() + System.lineSeparator());

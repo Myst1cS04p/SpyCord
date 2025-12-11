@@ -1,4 +1,4 @@
-package com.myst1cs04p.spycord.commandLogging;
+package com.myst1cs04p.spycord.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ public class OPJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if(!plugin.getIsEnabled() && !plugin.getIsEnabled("join-logger")){
+        if(!plugin.getIsEnabled() || !plugin.getIsEnabled("join-logger")){
             return;
         }
 
@@ -30,7 +30,7 @@ public class OPJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
-        if(!plugin.getIsEnabled() && !plugin.getIsEnabled("join-logger")){
+        if(!plugin.getIsEnabled() || !plugin.getIsEnabled("join-logger")){
             return;
         }
 

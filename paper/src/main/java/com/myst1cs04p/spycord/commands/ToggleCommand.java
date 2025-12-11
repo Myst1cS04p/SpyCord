@@ -21,7 +21,7 @@ public class ToggleCommand {
 
                 SpyCord.getDiscord()
                         .sendToDiscord((plugin.getIsEnabled() ? "✅✅✅" : "🛑🛑🛑")
-                                + "@everyone The plugin has been toggled **" + (plugin.getIsEnabled() ? "on" : "off")
+                                + "The plugin has been toggled **" + (plugin.getIsEnabled() ? "on" : "off")
                                 + "** by **" + sender.getName() + "**" + (plugin.getIsEnabled() ? "✅✅✅" : "🛑🛑🛑"));
 
                 plugin.log(Component.text("Toggling plugin ", NamedTextColor.WHITE)
