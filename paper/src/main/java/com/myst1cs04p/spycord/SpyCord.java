@@ -44,7 +44,7 @@ public final class SpyCord extends JavaPlugin {
         registerCommands();
         startVersionCheckerTask();
 
-        discordManager.sendToDiscord("@everyone **✅ THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS ✅**");
+        discordManager.sendToDiscord("**✅ THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS ✅**");
         new Metrics(this, 27671);
 
         commandLogger = new Logger(this);
@@ -55,7 +55,7 @@ public final class SpyCord extends JavaPlugin {
     @Override
     public void onDisable() {
         discordManager.sendToDiscord("""
-                @everyone **🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**
+                **🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**
                 -# This could be due to the server closing.
                 """);
     }
@@ -144,7 +144,7 @@ public final class SpyCord extends JavaPlugin {
         reloadConfig();
         isEnabled = getConfig().getBoolean("enabled", true);
         if (!isEnabled) {
-            discordManager.sendToDiscord("@everyone **🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**");
+            discordManager.sendToDiscord("**🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**");
         }
 
         printCommandList();
