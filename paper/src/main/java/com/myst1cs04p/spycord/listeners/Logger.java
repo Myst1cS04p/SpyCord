@@ -1,4 +1,4 @@
-package com.myst1cs04p.spycord.commandLogging;
+package com.myst1cs04p.spycord.listeners;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

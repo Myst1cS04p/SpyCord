@@ -1,4 +1,4 @@
-package com.myst1cs04p.spycord.commandLogging;
+package com.myst1cs04p.spycord.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
