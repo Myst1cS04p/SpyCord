@@ -29,7 +29,7 @@ public class CommandLogger implements Listener {
         String command = event.getMessage();
         
         if (commandList.contains(command.split(" ")[0].replace("/", ""))) {
-            plugin.getCommandLogger().log(String.format(" [%s] %s", player.name(), command));
+            plugin.getCommandLogger().log(String.format(" [%s] %s", player.getName(), command));
         }
     }
 
