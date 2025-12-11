@@ -20,7 +20,7 @@ public class CommandLogger implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        if(!plugin.getIsEnabled("command-logger")){
+        if(!plugin.getIsEnabled("command-logger") || !plugin.getIsEnabled()){
             return;
         }
         List<String> commandList = plugin.getSensitiveCommands();
@@ -35,7 +35,7 @@ public class CommandLogger implements Listener {
 
     @EventHandler
     public void onServerCommand(ServerCommandEvent event) {
-        if(!plugin.getIsEnabled("command-logger")){
+        if(!plugin.getIsEnabled("command-logger") || !plugin.getIsEnabled()){
             return;
         }
         List<String> commandList = plugin.getSensitiveCommands();

@@ -16,7 +16,7 @@ public class GameModeListener implements Listener {
 
     @EventHandler
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-        if(!plugin.getIsEnabled() && !plugin.getIsEnabled("gamemode-logger")) {
+        if(!plugin.getIsEnabled() || !plugin.getIsEnabled("gamemode-logger")) {
             return;
         }
 

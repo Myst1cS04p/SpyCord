@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.myst1cs04p.spycord.commandLogging.CommandLogger;
-import com.myst1cs04p.spycord.commandLogging.GameModeListener;
-import com.myst1cs04p.spycord.commandLogging.Logger;
-import com.myst1cs04p.spycord.commandLogging.OPJoinListener;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
+import com.myst1cs04p.spycord.listeners.CommandLogger;
+import com.myst1cs04p.spycord.listeners.GameModeListener;
+import com.myst1cs04p.spycord.listeners.Logger;
+import com.myst1cs04p.spycord.listeners.OPJoinListener;
+
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -33,7 +34,7 @@ public final class SpyCord extends JavaPlugin {
     // -------------------- Lifecycle --------------------
 
     @Override
-    public void onEnable() { 
+    public void onEnable() {
         instance = this;
         saveDefaultConfig();
 
@@ -62,57 +63,6 @@ public final class SpyCord extends JavaPlugin {
 
     // -------------------- Initialization Helpers --------------------
 
-    private void registerListeners(){
-        Bukkit.getPluginManager().registerEvents(new CommandLogger(this), this);
-        Bukkit.getPluginManager().registerEvents(new GameModeListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new OPJoinListener(this), this);
-    }
-
-    private void registerCommands() {
-        LiteralCommandNode<CommandSourceStack> command = Commands.literal("spycord")
-            .then(ReloadCommand.createCommand(this))
-            .then(ReportCommand.createCommand(this))
-            .then(StatusCommand.createCommand(this))
-            .then(ToggleCommand.createCommand(this))
-            .then(VersionCommand.createCommand(this))
-            .build();
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd ->{
-            cmd.registrar().register(command);
-        });
-    }
-
-    private void startVersionCheckerTask() {
-        new VersionNotifier(this, "Myst1cS04p", "SpyCord")
-                .onUpdate((String version) -> {
-                    String message = """
-                            # New SpyCord Version Available!
-                            ## Version %s
-                            - **Modrinth**: https://modrinth.com/plugin/spycord
-                            - **GitHub**: https://github.com/Myst1cS04p/SpyCord/releases
-                            - **SpigotMC**: https://www.spigotmc.org/resources/spycord.129615/
-                            - **Hangar**: https://hangar.papermc.io/Myst1cS04p/Spycord
-                            """.formatted(version);
-
-                    getLogger().log(Level.INFO, "A new version of SpyCord is available: {0}", version);
-                    SpyCord.getDiscord().sendToDiscord(message);
-                })
-                .withInterval(12 * 60 * 60 * 20L)
-                .start();
-    }
-
-    // -------------------- Utility Methods --------------------
-
-
-
-    private void printCommandList() {
-        List<String> commandList = getSensitiveCommands();
-        String formattedList = commandList.stream()
-                .map(cmd -> "*" + cmd.trim() + "*")
-                .collect(Collectors.joining("\n"));
-
-        discordManager.sendToDiscord("## Commands being logged:\n" + formattedList);
-    }
-
     private void printSplash() {
         getLogger().info("""
                 \u001B[34m
@@ -138,6 +88,60 @@ public final class SpyCord extends JavaPlugin {
                 """);
     }
 
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new CommandLogger(this), this);
+        Bukkit.getPluginManager().registerEvents(new GameModeListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new OPJoinListener(this), this);
+    }
+
+    private void registerCommands() {
+        LiteralCommandNode<CommandSourceStack> command = Commands.literal("spycord")
+                .then(ReloadCommand.createCommand(this)).then(ReportCommand.createCommand(this))
+                .then(StatusCommand.createCommand(this)).then(ToggleCommand.createCommand(this))
+                .then(VersionCommand.createCommand(this)).build();
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd -> {
+            cmd.registrar().register(command);
+        });
+    }
+
+    private void startVersionCheckerTask() {
+        new VersionNotifier(this, "Myst1cS04p", "SpyCord").onUpdate((String version) -> {
+            String message = """
+                    # New SpyCord Version Available!
+                    ## Version %s
+                    - **Modrinth**: https://modrinth.com/plugin/spycord
+                    - **GitHub**: https://github.com/Myst1cS04p/SpyCord/releases
+                    - **SpigotMC**: https://www.spigotmc.org/resources/spycord.129615/
+                    - **Hangar**: https://hangar.papermc.io/Myst1cS04p/Spycord
+                    """.formatted(version);
+
+            getLogger().log(Level.INFO, "A new version of SpyCord is available: {0}", version);
+            SpyCord.getDiscord().sendToDiscord(message);
+        }).withInterval(12 * 60 * 60 * 20L).start();
+    }
+
+    // -------------------- Utility Methods --------------------
+
+    public void togglePlugin() {
+        isEnabled = !isEnabled;
+    }
+
+    private void printCommandList() {
+        List<String> commandList = getSensitiveCommands();
+        String formattedList = commandList.stream().map(cmd -> "*" + cmd.trim() + "*")
+                .collect(Collectors.joining("\n"));
+
+        discordManager.sendToDiscord("## Commands being logged:\n" + formattedList);
+    }
+
+    private void printModuleList(){
+        discordManager.sendToDiscord("## Modules:\n"+
+            "- *Join Logging*: " + getConfig().getBoolean("modules.join-logger") +
+            "\n- *Gamemode Logging*: " + getConfig().getBoolean("modules.gamemode-logger") +
+            "\n- *Command Logging*: " + getConfig().getBoolean("modules.command-logger")
+        );
+    }
+
     // -------------------- Public Logging --------------------
 
     public void reloadPlugin() {
@@ -146,7 +150,7 @@ public final class SpyCord extends JavaPlugin {
         if (!isEnabled) {
             discordManager.sendToDiscord("**🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**");
         }
-
+        printModuleList();
         printCommandList();
         discordManager.SetWebhookUrl(getConfig().getString("webhook-url"));
     }
@@ -161,25 +165,19 @@ public final class SpyCord extends JavaPlugin {
     }
 
     public void log(Component message, CommandSender sender) {
-        sender.sendMessage(Component.text("[SPYCORD] ", NamedTextColor.LIGHT_PURPLE)
-                .append(message));
-    }
-
-    public void togglePlugin(){
-        isEnabled = !isEnabled;
+        sender.sendMessage(Component.text("[SPYCORD] ", NamedTextColor.LIGHT_PURPLE).append(message));
     }
 
     public List<String> getSensitiveCommands() {
-        List<String> sensitiveCommands = getConfig().getStringList("sensitive-commands");
+        List<String> sensitiveCommands = getConfig().getStringList("command-logging.sensitive-commands");
         return sensitiveCommands.stream().map(String::toLowerCase).toList();
     }
 
-    
     // -------------------- Getters --------------------
-    public Logger getCommandLogger(){
+    public Logger getCommandLogger() {
         return commandLogger;
     }
-    
+
     public static SpyCord getInstance() {
         return instance;
     }
@@ -188,11 +186,11 @@ public final class SpyCord extends JavaPlugin {
         return discordManager;
     }
 
-    public boolean getIsEnabled(){
+    public boolean getIsEnabled() {
         return isEnabled;
     }
 
-    public boolean getIsEnabled(String module){
+    public boolean getIsEnabled(String module) {
         return getConfig().getBoolean("modules." + module);
     }
 }
