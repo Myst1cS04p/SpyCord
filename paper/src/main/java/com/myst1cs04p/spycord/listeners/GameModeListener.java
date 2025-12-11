@@ -24,7 +24,7 @@ public class GameModeListener implements Listener {
         GameMode newMode = event.getNewGameMode();
         GameMode oldMode = event.getPlayer().getGameMode();
 
-        String logEntry = String.format("[%s] [OP] %s: switched gamemode from %s to %s\n",
+        String logEntry = String.format("[%s] [OP]: switched gamemode from %s to %s\n",
                 playerName,
                 oldMode.name(),
                 newMode.name());
