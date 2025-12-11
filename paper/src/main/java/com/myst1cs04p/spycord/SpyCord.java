@@ -5,11 +5,15 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.myst1cs04p.spycord.commandLogging.CommandLogger;
+import com.myst1cs04p.spycord.commandLogging.GameModeListener;
 import com.myst1cs04p.spycord.commandLogging.Logger;
+import com.myst1cs04p.spycord.commandLogging.OPJoinListener;
 import com.myst1cs04p.updater.VersionNotifier;
 import com.myst1cs04p.spycord.commands.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -36,6 +40,7 @@ public final class SpyCord extends JavaPlugin {
         this.isEnabled = getConfig().getBoolean("enabled", true);
         discordManager = new DiscordManager(this, getConfig().getString("webhook-url"));
 
+        registerListeners();
         registerCommands();
         startVersionCheckerTask();
 
@@ -56,6 +61,12 @@ public final class SpyCord extends JavaPlugin {
     }
 
     // -------------------- Initialization Helpers --------------------
+
+    private void registerListeners(){
+        Bukkit.getPluginManager().registerEvents(new CommandLogger(this), this);
+        Bukkit.getPluginManager().registerEvents(new GameModeListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new OPJoinListener(this), this);
+    }
 
     private void registerCommands() {
         LiteralCommandNode<CommandSourceStack> command = Commands.literal("spycord")
@@ -163,12 +174,12 @@ public final class SpyCord extends JavaPlugin {
         return sensitiveCommands.stream().map(String::toLowerCase).toList();
     }
 
+    
+    // -------------------- Getters --------------------
     public Logger getCommandLogger(){
         return commandLogger;
     }
-
-    // -------------------- Getters --------------------
-
+    
     public static SpyCord getInstance() {
         return instance;
     }
