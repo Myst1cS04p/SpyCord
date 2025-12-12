@@ -98,7 +98,7 @@ public final class SpyCord extends JavaPlugin {
         LiteralCommandNode<CommandSourceStack> command = Commands.literal("spycord")
                 .then(ReloadCommand.createCommand(this)).then(ReportCommand.createCommand(this))
                 .then(StatusCommand.createCommand(this)).then(ToggleCommand.createCommand(this))
-                .then(VersionCommand.createCommand(this)).build();
+                .then(VersionCommand.createCommand(this)).then(HelpCommand.createCommand(this)).build();
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd -> {
             cmd.registrar().register(command);
         });
