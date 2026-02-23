@@ -1,0 +1,30 @@
+name: SpyCord
+version: '1.2.0'
+main: com.myst1cs04p.spycord.bukkit.SpyCordBukkit
+api-version: '1.13'
+website: https://github.com/Myst1cS04p/SpyCord
+author: Myst1cS04p
+
+commands:
+spycord:
+description: SpyCord main command
+usage: /spycord <subcommand>
+permission: spycord.use
+
+permissions:
+spycord.use:
+description: "Allows use of SpyCord commands."
+default: op
+spycord.version:
+description: "Allows use of the version command."
+default: op
+spycord.reload:
+description: "Allows use of the reload command."
+default: op
+spycord.report:
+description: "Allows use of the report command."
+default: op
+spycord.toggle:
+description: "Allows use of the toggle command."
+default: op
+
