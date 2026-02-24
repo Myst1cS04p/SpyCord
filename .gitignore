@@ -22,7 +22,5 @@ build/
 # Logs and local files
 *.log
 
-# Secret config
-config.yml
 
 .gradle/

@@ -1,0 +1,29 @@
+# Master switch. Set to false to disable all logging without unloading the plugin.
+enabled: true
+
+# Discord webhook URL. Required for Discord logging to function.
+# Leave blank to disable Discord output (file logging still works).
+webhook-url: "https://discord.com/api/webhooks/your-webhook"
+
+# Per-module toggles. Each module respects the master 'enabled' flag above.
+modules:
+  command-logger: true   # Log sensitive commands to file + Discord
+  gamemode-logger: true  # Log OP gamemode changes
+  join-logger: true      # Log OP player joins and quits
+
+# Commands to watch. Only commands whose root matches an entry here are logged.
+# Case-insensitive. Do not include the leading slash.
+command-logging:
+  sensitive-commands:
+    - op
+    - deop
+    - ban
+    - pardon
+    - gamemode
+    - give
+    - stop
+    - kill
+    - spycord
+    - kick
+    - data
+    - gamerule
