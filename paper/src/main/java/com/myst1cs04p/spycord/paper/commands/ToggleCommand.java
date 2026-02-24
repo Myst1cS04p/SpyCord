@@ -20,6 +20,8 @@ public class ToggleCommand {
             boolean current = services.getConfig().getBoolean("enabled", true);
             boolean next = !current;
 
+            services.getConfig().setBoolean("enabled", next);
+
             services.getDiscordClient().send(
                     (next ? "✅✅✅" : "🛑🛑🛑") +
                             " The plugin has been toggled **" + (next ? "on" : "off") +

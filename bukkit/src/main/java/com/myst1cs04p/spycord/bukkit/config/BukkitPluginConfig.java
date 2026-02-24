@@ -39,5 +39,10 @@ public class BukkitPluginConfig implements IPluginConfig {
         plugin.reloadConfig();
         this.config = plugin.getConfig();
     }
+
+    @Override
+    public void setBoolean(String path, boolean value) {
+        config.set(path, value);
+    }
 }
 

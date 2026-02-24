@@ -58,7 +58,8 @@ public class BukkitSpyCordCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("[SpyCord] You don't have permission to do that.");
                     return true;
                 }
-                sender.sendMessage("[SpyCord] Toggle is not yet implemented in the Bukkit module.");
+                boolean current = services.getConfig().getBoolean("enabled", true);
+                services.getConfig().setBoolean("enabled", !current);
             }
 
             case "version" -> {
