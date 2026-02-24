@@ -7,6 +7,9 @@ import com.myst1cs04p.spycord.bukkit.listeners.BukkitConnectionListener;
 import com.myst1cs04p.spycord.bukkit.listeners.BukkitGameModeListener;
 import com.myst1cs04p.spycord.common.ServiceRegistry;
 import com.myst1cs04p.spycord.common.discord.WebhookDiscordClient;
+import com.myst1cs04p.spycord.common.updater.VersionNotifier;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 // Bukkit entry point
@@ -16,7 +19,7 @@ public class SpyCordBukkit extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig(); // INitializes the config
+        saveDefaultConfig(); // Initializes the config
 
         BukkitPluginConfig config = new BukkitPluginConfig(this);
 
@@ -57,6 +60,27 @@ public class SpyCordBukkit extends JavaPlugin {
         BukkitSpyCordCommand handler = new BukkitSpyCordCommand(this, services);
         getCommand("spycord").setExecutor(handler);
         getCommand("spycord").setTabCompleter(handler);
+    }
+
+    protected void startVersionChecker(){
+        String currentVersion = getDescription().getVersion();
+
+        VersionNotifier notifier = new VersionNotifier(getLogger(), "Myst1cS04p", "SpyCord", currentVersion)
+                .onUpdate(version -> {
+                    String message = """
+                            # New SpyCord Version Available!
+                            ## Version %s
+                            - **Modrinth**: https://modrinth.com/plugin/spycord
+                            - **GitHub**: https://github.com/Myst1cS04p/SpyCord/releases
+                            - **SpigotMC**: https://www.spigotmc.org/resources/spycord.129615/
+                            - **Hangar**: https://hangar.papermc.io/Myst1cS04p/Spycord
+                            """.formatted(version);
+
+                    getLogger().info("A new version of SpyCord is available: " + version);
+                    services.getDiscordClient().send(message);
+                });
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, notifier::checkOnce, 0, 12 * 60 * 60 * 20L);
     }
 
     private void printSplash() {
