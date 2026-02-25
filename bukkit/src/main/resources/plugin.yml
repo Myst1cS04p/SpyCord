@@ -1,5 +1,5 @@
 name: SpyCord
-version: '2.0.0'
+version: '2.0.1'
 main: com.myst1cs04p.spycord.bukkit.SpyCordBukkit
 api-version: '1.13'
 website: https://github.com/Myst1cS04p/SpyCord

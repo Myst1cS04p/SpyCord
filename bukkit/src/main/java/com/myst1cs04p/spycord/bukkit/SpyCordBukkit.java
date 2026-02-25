@@ -11,6 +11,7 @@ import com.myst1cs04p.spycord.common.updater.VersionNotifier;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 
 // Bukkit entry point
 public class SpyCordBukkit extends JavaPlugin {
@@ -35,6 +36,10 @@ public class SpyCordBukkit extends JavaPlugin {
 
         services.getDiscordClient().send("**✅ THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS ✅**");
         printSplash();
+
+        // Initialize bStats
+         int pluginId = 29759;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     @Override
