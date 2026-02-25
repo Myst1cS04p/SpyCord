@@ -35,6 +35,10 @@ public class SpyCordBukkit extends JavaPlugin {
 
         services.getDiscordClient().send("**✅ THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS ✅**");
         printSplash();
+
+        // Initialize bStats
+         int pluginId = 29759;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     @Override
