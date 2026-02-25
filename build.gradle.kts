@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.myst1cs04p"
-    version = "2.0.0"
+    version = "2.0.1"
 
     repositories {
         mavenCentral()

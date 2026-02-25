@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 repositories {
@@ -21,9 +21,9 @@ dependencies {
 
 tasks.withType<ShadowJar> {
     archiveClassifier.set("") // replaces normal jar
-    archiveBaseName.set(project.name + "-bukkit")
+    archiveBaseName.set("spycord-bukkit")
 
-    relocate("org.bstats", "${project.group}.bstats")
+    relocate("org.bstats", "com.myst1cs04p.bstats")
 
     // Do NOT include Spigot API in shaded jar
     dependencies {

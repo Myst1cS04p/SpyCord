@@ -11,6 +11,7 @@ import com.myst1cs04p.spycord.common.updater.VersionNotifier;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 
 // Bukkit entry point
 public class SpyCordBukkit extends JavaPlugin {
