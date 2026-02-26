@@ -18,30 +18,6 @@ import java.util.logging.Level;
 public final class SpyCordPaper extends SpyCordBukkit {
 
     @Override
-    public void onEnable() {
-        super.onEnable();
-
-        // Override Bukkit's legacy command registration with Brigadier
-        registerCommands();
-        startVersionChecker();
-    }
-
-    @Override
-    protected void registerCommands() {
-        LiteralCommandNode<CommandSourceStack> root = Commands.literal("spycord")
-                .then(ReloadCommand.create(this, services))
-                .then(ReportCommand.create(this))
-                .then(StatusCommand.create(services))
-                .then(ToggleCommand.create(this, services))
-                .then(VersionCommand.create(this))
-                .then(HelpCommand.create(this))
-                .build();
-
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd ->
-                cmd.registrar().register(root));
-    }
-
-    @Override
     protected void startVersionChecker() {
         String currentVersion = getPluginMeta().getVersion();
 
@@ -64,5 +40,29 @@ public final class SpyCordPaper extends SpyCordBukkit {
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 notifier::checkOnce, 0L, 12 * 60 * 60 * 20L);
     }
+    
+    @Override
+    public void onEnable() {
+        super.onEnable();
+
+        // Override Bukkit's legacy command registration with Brigadier
+        registerCommands();
+    }
+
+    @Override
+    protected void registerCommands() {
+        LiteralCommandNode<CommandSourceStack> root = Commands.literal("spycord")
+                .then(ReloadCommand.create(this, services))
+                .then(ReportCommand.create(this))
+                .then(StatusCommand.create(services))
+                .then(ToggleCommand.create(this, services))
+                .then(VersionCommand.create(this))
+                .then(HelpCommand.create(this))
+                .build();
+
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd ->
+                cmd.registrar().register(root));
+    }
+
 }
 
