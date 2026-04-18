@@ -49,8 +49,7 @@ public final class SpyCordPaper extends SpyCordBukkit {
         registerCommands();
     }
 
-    @Override
-    protected void registerCommands() {
+    private void registerCommands() {
         LiteralCommandNode<CommandSourceStack> root = Commands.literal("spycord")
                 .then(ReloadCommand.create(this, services))
                 .then(ReportCommand.create(this))
