@@ -5,7 +5,7 @@ import com.myst1cs04p.spycord.common.discord.IDiscordClient;
 import com.myst1cs04p.spycord.common.discord.WebhookDiscordClient;
 import com.myst1cs04p.spycord.common.events.EventPipeline;
 import com.myst1cs04p.spycord.common.logging.CompositeLogSink;
-import com.myst1cs04p.spycord.common.logging.DebugLogger;
+import com.myst1cs04p.spycord.common.logging.DebugLogSink;
 import com.myst1cs04p.spycord.common.logging.DiscordLogSink;
 import com.myst1cs04p.spycord.common.logging.FileLogSink;
 import com.myst1cs04p.spycord.common.stats.ActivityTracker;
@@ -15,47 +15,43 @@ import java.util.logging.Logger;
 /**
  * Wires all common services together and exposes them via getters.
  *
- * <p>Constructed once in the platform plugin's {@code onEnable()} and held for the
- * lifetime of the plugin. Owning construction of {@link WebhookDiscordClient} here
- * (rather than in the platform plugin) allows {@link ActivityTracker} and
- * {@link DebugLogger} to be injected without circular dependency gymnastics.
+ * <p>The {@link DebugLogSink} is the third member of the {@link CompositeLogSink},
+ * sitting after the file and Discord sinks. It only emits when {@code debug: true},
+ * so there is no production overhead. Every event that clears the pipeline filters
+ * and reaches {@code sink.write()} is automatically covered — no separate injection
+ * into {@link EventPipeline} or {@link WebhookDiscordClient} required.
  */
 public class ServiceRegistry {
 
-    private final IPluginConfig config;
-    private final IDiscordClient discordClient;
+    private final IPluginConfig    config;
+    private final IDiscordClient   discordClient;
     private final CompositeLogSink logSink;
-    private final EventPipeline eventPipeline;
-    private final ActivityTracker activityTracker;
+    private final EventPipeline    eventPipeline;
+    private final ActivityTracker  activityTracker;
 
-    /**
-     * @param config A ready-to-read config (typically a {@code CachedPluginConfig}
-     *               wrapping the platform's raw config).
-     * @param logger The platform's logger -- used by all services that need console output.
-     */
     public ServiceRegistry(IPluginConfig config, Logger logger) {
         this.config          = config;
         this.activityTracker = new ActivityTracker();
 
-        DebugLogger debug    = new DebugLogger(logger, config);
-
-        this.discordClient   = new WebhookDiscordClient(
+        this.discordClient = new WebhookDiscordClient(
                 logger,
                 config.getString("webhook-url", ""),
-                activityTracker,
-                debug
+                activityTracker
         );
 
-        FileLogSink    fileSink    = new FileLogSink("command.log", logger);
+        FileLogSink   fileSink    = new FileLogSink("command.log", logger);
         DiscordLogSink discordSink = new DiscordLogSink(discordClient);
-        this.logSink               = new CompositeLogSink(fileSink, discordSink);
+        DebugLogSink  debugSink   = new DebugLogSink(logger, config);
 
-        this.eventPipeline = new EventPipeline(config, logSink, activityTracker, debug);
+        // that passes the pipeline; DebugLogSink self-gates on the config flag.
+        this.logSink = new CompositeLogSink(fileSink, discordSink, debugSink);
+
+        this.eventPipeline = new EventPipeline(config, logSink, activityTracker);
     }
 
-    public IPluginConfig     getConfig()          { return config; }
-    public IDiscordClient    getDiscordClient()    { return discordClient; }
-    public CompositeLogSink  getLogSink()          { return logSink; }
-    public EventPipeline     getEventPipeline()    { return eventPipeline; }
-    public ActivityTracker   getActivityTracker()  { return activityTracker; }
+    public IPluginConfig    getConfig()          { return config; }
+    public IDiscordClient   getDiscordClient()    { return discordClient; }
+    public CompositeLogSink getLogSink()          { return logSink; }
+    public EventPipeline    getEventPipeline()    { return eventPipeline; }
+    public ActivityTracker  getActivityTracker()  { return activityTracker; }
 }

@@ -1,6 +1,5 @@
 package com.myst1cs04p.spycord.common.discord;
 
-import com.myst1cs04p.spycord.common.logging.DebugLogger;
 import com.myst1cs04p.spycord.common.stats.ActivityTracker;
 
 import java.io.OutputStream;
@@ -15,20 +14,16 @@ import java.util.logging.Logger;
  *
  * <p>Records every HTTP response into the supplied {@link ActivityTracker} so that
  * bStats custom charts and the activity digest have accurate delivery data.
- * Verbose lifecycle events are gated behind {@link DebugLogger}.
  */
 public class WebhookDiscordClient implements IDiscordClient {
 
-    private final Logger logger;
+    private final Logger         logger;
     private final ActivityTracker tracker;
-    private final DebugLogger debug;
     private URL webhookUrl;
 
-    public WebhookDiscordClient(Logger logger, String webhookUrl,
-                                ActivityTracker tracker, DebugLogger debug) {
+    public WebhookDiscordClient(Logger logger, String webhookUrl, ActivityTracker tracker) {
         this.logger  = logger;
         this.tracker = tracker;
-        this.debug   = debug;
         setWebhookUrl(webhookUrl);
     }
 
@@ -36,9 +31,8 @@ public class WebhookDiscordClient implements IDiscordClient {
     public void setWebhookUrl(String url) {
         try {
             this.webhookUrl = URI.create(url).toURL();
-            debug.log("Webhook URL updated: " + url);
         } catch (Exception e) {
-            logger.warning("[SpyCord] Invalid webhook URL: " + url + " - " + e.getMessage());
+            logger.warning("[SpyCord] Invalid webhook URL: " + url + " -- " + e.getMessage());
             this.webhookUrl = null;
         }
     }
@@ -52,7 +46,6 @@ public class WebhookDiscordClient implements IDiscordClient {
         }
 
         URL target = webhookUrl;
-        debug.log("Dispatching webhook message (async): " + message);
 
         CompletableFuture.runAsync(() -> {
             try {
@@ -70,7 +63,6 @@ public class WebhookDiscordClient implements IDiscordClient {
 
                 int code = connection.getResponseCode();
                 if (code == 204) {
-                    debug.log("Webhook delivery successful (HTTP 204).");
                     tracker.recordWebhookSuccess();
                 } else {
                     logger.warning("[SpyCord] Discord webhook returned unexpected HTTP " + code);

@@ -3,13 +3,19 @@ enabled: true
 
 # Discord webhook URL. Required for Discord logging to function.
 # Leave blank to disable Discord output (file logging still works).
+# WARNING: Do NOT share this file publicly with your webhook URL in it.
 webhook-url: "https://discord.com/api/webhooks/your-webhook"
 
-# Per-module toggles. Each module respects the master 'enabled' flag above.
+# Debug mode. When true, verbose diagnostic messages are written to the server console.
+# Useful for diagnosing webhook delivery issues or unexpected filtering behaviour.
+# Has no effect on Discord output. Safe to toggle with /spycord reload.
+debug: false
+
+# Per-module toggles. Each module also respects the master 'enabled' flag above.
 modules:
-  command-logger: true   # Log sensitive commands to file + Discord
-  gamemode-logger: true  # Log OP gamemode changes
-  join-logger: true      # Log OP player joins and quits
+  command-logger:  true   # Log sensitive commands to file + Discord
+  gamemode-logger: true   # Log OP gamemode changes
+  join-logger:     true   # Log OP player joins and quits
 
 # Commands to watch. Only commands whose root matches an entry here are logged.
 # Case-insensitive. Do not include the leading slash.
@@ -27,3 +33,28 @@ command-logging:
     - kick
     - data
     - gamerule
+
+# Activity digest
+# sends a periodic summary sent to your Discord channel showing how much work SpyCord has done. 
+activity-digest:
+  enabled: true
+  interval: weekly   # Options: daily, weekly
+
+# Discord message templates.
+#
+# Placeholders:
+#   {sender}   - Name of the command sender (or CONSOLE)
+#   {command}  - Full command string including arguments
+#   {player}   - Player's name (gamemode / connection events)
+#   {old_mode} - Previous gamemode (gamemode events)
+#   {new_mode} - New gamemode (gamemode events)
+#   {action}   - "joined" or "left" (connection events)
+#
+# Standard Discord markdown is supported (bold, italic, inline code, etc.).
+# Reload with /spycord reload after making changes.
+messages:
+  command: "`{sender}` ran: `{command}`"
+  gamemode-change: "`{player}` switched gamemode from `{old_mode}` to `{new_mode}`"
+  connection: "`{player}` {action} the server."
+  plugin-enabled: "**✅ THE PLUGIN HAS BEEN ENABLED AND WILL LOG COMMANDS ✅**"
+  plugin-disabled: "**🛑 THE PLUGIN HAS BEEN DISABLED AND WILL NOT LOG COMMANDS 🛑**\n-# This could be due to the server closing."
